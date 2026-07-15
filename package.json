@@ -12,7 +12,7 @@
     "start": "eleventy --serve",
     "build": "eleventy",
     "clean": "rm -rf _site .cache .eleventy-cache",
-    "audit": "./scripts/audit-images.sh all",
+    "audit": "$(command -v /opt/homebrew/bin/bash || command -v /usr/local/bin/bash || command -v bash) scripts/audit-images.sh all",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {

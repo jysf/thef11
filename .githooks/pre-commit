@@ -15,4 +15,12 @@
 
 set -euo pipefail
 
-exec "$(git rev-parse --show-toplevel)/scripts/audit-images.sh" staged
+# scripts/audit-images.sh needs Bash >= 4 (associative arrays), but macOS ships
+# Bash 3.2 as /bin/bash and `#!/usr/bin/env bash` can resolve to it depending on
+# PATH order. Prefer a Homebrew bash if present, else whatever `bash` resolves to
+# (Bash 5 on Linux/CI). On macOS, `brew install bash` provides one.
+run_bash="$(command -v /opt/homebrew/bin/bash \
+  || command -v /usr/local/bin/bash \
+  || command -v bash)"
+
+exec "$run_bash" "$(git rev-parse --show-toplevel)/scripts/audit-images.sh" staged
