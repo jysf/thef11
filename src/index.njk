@@ -6,29 +6,35 @@ layout: base.njk
   guide, so no numbering and no "spine". A `featured: true` post is lifted out
   and rendered large at the top; everything else follows newest-first.
 
-  The feed is built from typographic primitives (.eyebrow, .lead, .byline)
-  rather than a dedicated card component: restraint is the design.
+  Intro and feed share one container (.wrap article), so they line up on the
+  same left edge and reading measure. Each entry leads with its title; the
+  topics and date sit together on a quiet meta line beneath it.
 #}
 {% macro entry(post, big=false) %}
-<article class="entry{{ ' entry--featured' if big }}">
-  {%- if post.data.topics.length %}
-  <p class="eyebrow">{{ post.data.topics | join(" · ") }}</p>
+<article class="entry">
+  {% if big %}
+  <h1 class="entry__title"><a href="{{ post.url }}">{{ post.data.title }}</a></h1>
+  {%- else %}
+  <h2 class="entry__title"><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
   {%- endif %}
-  {% if big %}<h1><a href="{{ post.url }}">{{ post.data.title }}</a></h1>
-  {%- else %}<h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>{% endif %}
   {%- if post.data.dek %}
   <p class="lead">{{ post.data.dek }}</p>
   {%- endif %}
-  <p class="byline mono">{{ post.date | readableDate }}</p>
+  <p class="byline mono">
+    {{ post.date | readableDate }}
+    {%- if post.data.topics.length %} · {{ post.data.topics | join(" · ") }}{% endif %}
+  </p>
 </article>
 {% endmacro %}
 
-<section class="hero">
-  <p class="eyebrow">Photographs &amp; field notes</p>
-  <p class="hero__thesis">{{ site.description }}</p>
-</section>
+<div class="wrap article">
+  <header class="masthead">
+    <p class="eyebrow">Photographs &amp; field notes</p>
+    <p class="hero__thesis">{{ site.description }}</p>
+  </header>
 
-<div class="wrap">
+  <hr>
+
   {%- for post in collections.featured %}
   {{ entry(post, true) }}
   {%- endfor %}
