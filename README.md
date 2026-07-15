@@ -11,14 +11,13 @@ Live at <https://thef11.com>.
   - macOS: `brew install exiftool`
   - Ubuntu: `sudo apt-get install -y libimage-exiftool-perl`
 - **Bash ≥ 4.** `scripts/audit-images.sh` uses associative arrays (`declare -A`),
-  a Bash 4 feature. macOS still ships Bash 3.2, which the script cannot run on —
-  install a modern one with `brew install bash` (Homebrew puts it first on your
-  PATH, so `#!/usr/bin/env bash` picks it up). CI runs Ubuntu's Bash 5, so this
-  only bites local macOS.
+  a Bash 4 feature; macOS still ships Bash 3.2. On macOS, run `brew install bash`
+  — the pre-commit hook and `npm run audit` locate a Homebrew bash automatically,
+  so it does **not** need to be first on your PATH. CI runs Ubuntu's Bash 5.
 
-  If the audit ever aborts with `declare: -A: invalid option`, this is the
-  reason. Note the audit fails **closed**: when it can't run, the pre-commit
-  hook blocks *every* commit, not just ones with bad images.
+  If the audit aborts with `declare: -A: invalid option`, no Bash ≥ 4 was found
+  at all — install one. The audit fails **closed**: when it can't run, the hook
+  blocks *every* commit, not just ones with bad images.
 
 ## Setup
 
