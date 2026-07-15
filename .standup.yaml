@@ -1,0 +1,19 @@
+name: thef11.com
+status: active
+criticality: low
+focus: get the eleventy blog live + a daily photo/article posting rhythm
+next: deploy the site and publish the first post
+tasks:
+  - {text: deploy site + point thef11.com at it, done: false}
+  - {text: set up the daily-post workflow (photo + article templates), done: false}
+  - {text: publish first post, done: false}
+
+# Forward-looking, unframed pillars (a starter — edit to your real plan). Tasks
+# above are the immediate work; roadmap is "someday, when the trigger fires".
+roadmap:
+  - pillar: RSS + subscribe
+    resume_when: you're posting regularly enough that readers want to follow along
+  - pillar: Photo galleries / photo essays
+    resume_when: a post has more photos than the single-column layout handles well
+  - pillar: A crustyimg / AI-dev series
+    resume_when: you have 3+ related posts that would read better threaded as a series

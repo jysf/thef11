@@ -1,0 +1,105 @@
+# .exif-keeplist
+#
+# The only metadata tags permitted on any image in this repository.
+#
+# This is a KEEP-LIST, not a deny-list. The audit refuses any tag that is not
+# on this list — including tags that do not exist yet. That is the point: a
+# camera firmware update inventing a new location-adjacent field is blocked
+# automatically, because it is not written here.
+#
+# The repository is public and git history is permanent. Adding a line to this
+# file is a deliberate act. Do it in its own commit, so the decision is
+# attributable.
+#
+# Groups audited: EXIF, GPS, MakerNotes, XMP, IPTC, Photoshop, JFIF, PNG, APP14.
+# Groups skipped: File and Composite (derived by exiftool, not stored in the
+# file), ExifTool (the scanner itself), ICC_Profile (colour management, carries
+# no identity, worth keeping).
+
+# ── What the photograph was made with ────────────────────────────
+Make
+Model
+LensModel
+LensInfo
+LensMake
+
+# ── How it was made ──────────────────────────────────────────────
+FNumber
+ExposureTime
+ISO
+FocalLength
+FocalLengthIn35mmFormat
+ExposureProgram
+ExposureCompensation
+MeteringMode
+Flash
+
+# ── When ─────────────────────────────────────────────────────────
+DateTimeOriginal
+CreateDate
+
+# ── Structural: needed to display the image correctly ────────────
+# Orientation matters — drop it and portrait photos render sideways.
+Orientation
+ColorSpace
+ExifImageWidth
+ExifImageHeight
+XResolution
+YResolution
+ResolutionUnit
+ExifVersion
+BitsPerSample
+ColorComponents
+EncodingProcess
+ImageWidth
+ImageHeight
+JFIFVersion
+YCbCrSubSampling
+# Boilerplate every JPEG encoder writes. Carries no identity — these describe
+# how the pixels are laid out, not who made them or where. Verified against a
+# real encoder rather than assumed.
+YCbCrPositioning
+ComponentsConfiguration
+FlashpixVersion
+InteropIndex
+InteropVersion
+Compression
+Quality
+SceneCaptureType
+CustomRendered
+WhiteBalance
+DigitalZoomRatio
+SubSecTime
+SubSecTimeOriginal
+SubSecTimeDigitized
+OffsetTime
+OffsetTimeOriginal
+SRGBRendering
+Gamma
+ColorType
+BitDepth
+Filter
+Interlace
+PixelUnits
+PixelsPerUnitX
+PixelsPerUnitY
+SamplesPerPixel
+PhotometricInterpretation
+PlanarConfiguration
+RowsPerStrip
+
+# ── DELIBERATELY ABSENT — do not add without thinking hard ───────
+#
+#   GPS*            location. The entire reason this file exists.
+#   MakerNote*      manufacturer blob. Carries body serial numbers on Nikon
+#                   and Leica. Also carries Fuji's film simulation, which is
+#                   genuinely nice to keep — but it lives in the same blob as
+#                   the serials, and there is no safe way to keep half of it.
+#                   Dropped. If this becomes annoying, that is a real feature
+#                   request for crustyimg: keep-list support for named
+#                   MakerNote fields.
+#   SerialNumber, BodySerialNumber, LensSerialNumber, InternalSerialNumber
+#   OwnerName, CameraOwnerName, Artist, Copyright, Creator, By-line
+#   Software        reveals the developing toolchain; no reason to publish it
+#   HostComputer    reveals the machine name
+#   UserComment     free-text; can contain anything

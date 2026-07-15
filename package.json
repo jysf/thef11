@@ -1,0 +1,23 @@
+{
+  "name": "thef11",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "f/11 — a photo blog built with Eleventy, and the reference integration testbed for crustyimg.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "clean": "rm -rf _site .cache .eleventy-cache",
+    "audit": "./scripts/audit-images.sh all",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-rss": "^2.0.2",
+    "lucide-static": "^0.548.0"
+  }
+}

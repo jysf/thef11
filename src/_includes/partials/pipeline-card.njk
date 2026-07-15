@@ -1,0 +1,40 @@
+{#
+  Pipeline receipt. Expects a `pipeline` object, e.g. from post front matter
+  or a generated manifest record:
+
+    pipeline:
+      kept:
+        - { k: "Camera",   v: "Fujifilm X-T5" }
+        - { k: "Lens",     v: "XF 35mm f/1.4" }
+        - { k: "Aperture", v: "f/11" }
+        - { k: "Shutter",  v: "1/250s" }
+        - { k: "ISO",      v: "125" }
+        - { k: "Date",     v: "2026-05-14" }
+      stripped: [ "GPSLatitude", "GPSLongitude", "SerialNumber", "MakerNote" ]
+      saved:    "1.8 MB"
+      ratio:    "63% smaller"
+      chapter:  "05"
+
+  PRIVACY RULE: stripped rows show the field NAME only. Never emit a value
+  we removed from the image — not even struck through.
+#}
+<aside class="pipeline" aria-label="Image pipeline receipt">
+  <p class="pipeline__eyebrow">pipeline · crustyimg strip{% if pipeline.chapter %} · ch. {{ pipeline.chapter }}{% endif %}</p>
+  <dl class="pipeline__rows">
+    {%- for row in pipeline.kept %}
+    <div class="pipeline__row">
+      <dt class="pipeline__key">{{ row.k }}</dt>
+      <dd class="pipeline__val">{{ row.v }}</dd>
+    </div>
+    {%- endfor %}
+    {%- for name in pipeline.stripped %}
+    <div class="pipeline__row pipeline__row--stripped">
+      <dt class="pipeline__key">{{ name }}</dt>
+      <dd class="pipeline__val">stripped</dd>
+    </div>
+    {%- endfor %}
+  </dl>
+  {%- if pipeline.saved %}
+  <p class="pipeline__saved">−<b>{{ pipeline.saved }}</b><small>after strip · {{ pipeline.ratio }}</small></p>
+  {%- endif %}
+</aside>

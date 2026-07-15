@@ -1,0 +1,31 @@
+---
+layout: base.njk
+---
+{#
+  The essay is the exhibit. Inside `content`, plain elements sit in the 65ch
+  measure automatically; wrap any image you want to break out in
+  <figure class="bleed">…</figure> and it fills the viewport width.
+
+  The cover carries `view-transition-name: essay-cover` so it can morph out of
+  the matching feed/guide thumbnail. For the morph to be seamless the thumbnail
+  and this cover must be derivatives of the SAME crop.
+#}
+<article class="essay">
+  <header class="cover">
+    {% if cover %}
+    <img src="{{ cover }}" alt="{{ coverAlt or title }}" style="view-transition-name: essay-cover;">
+    {% else %}
+    <div class="frame" style="--ar: 16/9; --lqip: {{ lqip or '#2a2622' }}; view-transition-name: essay-cover;"></div>
+    {% endif %}
+    <div class="cover__title">
+      <p class="eyebrow">{{ topics | join(" · ") if topics }}</p>
+      <h1>{{ title }}</h1>
+    </div>
+  </header>
+
+  {{ content | safe }}
+
+  {%- if pipeline %}
+  {% include "partials/pipeline-card.njk" %}
+  {%- endif %}
+</article>

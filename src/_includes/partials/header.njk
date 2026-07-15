@@ -1,0 +1,12 @@
+{# Primary nav. `site.nav` and `site.repos` come from src/_data/site.js #}
+<header class="site-head">
+  <a class="wordmark" href="/">f<span class="slash">/</span>11</a>
+  <nav class="site-nav" aria-label="Primary">
+    {%- for item in site.nav %}
+    <a href="{{ item.url }}"{% if page.url and page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+    {%- endfor %}
+    {%- if site.repos.plugin %}
+    <a href="{{ site.repos.plugin }}" rel="external">Plugin ↗</a>
+    {%- endif %}
+  </nav>
+</header>

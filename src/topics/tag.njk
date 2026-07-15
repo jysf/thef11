@@ -1,0 +1,37 @@
+---
+# One page per tag, generated from Eleventy's automatic tag collections.
+# size: 1 → a page per tag; the reserved collections are filtered out so we
+# don't accidentally publish /topics/posts/ or /topics/all/.
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+    - posts
+    - featured
+permalink: "/topics/{{ tag | slugify }}/"
+layout: base.njk
+---
+<div class="wrap article">
+  <header class="article__head">
+    <p class="eyebrow">Topic</p>
+    <h1>{{ tag }}</h1>
+    <p class="byline">
+      <a href="/topics/{{ tag | slugify }}/feed.xml" rel="external">{% icon "rss" %} Feed for {{ tag }}</a>
+    </p>
+  </header>
+
+  {%- for post in collections[tag] | reverse %}
+  <article class="entry">
+    {%- if post.data.topics.length %}
+    <p class="eyebrow">{{ post.data.topics | join(" · ") }}</p>
+    {%- endif %}
+    <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+    {%- if post.data.dek %}
+    <p class="lead">{{ post.data.dek }}</p>
+    {%- endif %}
+    <p class="byline mono">{{ post.date | readableDate }}</p>
+  </article>
+  {%- endfor %}
+</div>

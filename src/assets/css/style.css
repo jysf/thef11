@@ -1,0 +1,280 @@
+/* ============================================================
+   f/11 — design system
+   A case study in building a photo-heavy Eleventy site with crustyimg.
+
+   The idea in one line: the chrome stays near-monochrome and the
+   photographs supply all the color. The single accent is a darkroom
+   safelight amber, and it lives — almost exclusively — in the slash.
+   If you're reading this file to understand the design, that restraint
+   IS the design. Keep it that way.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* — Surfaces · warm near-black, barely-there lifts — */
+  --bg:        #0e0f11;   /* the room */
+  --bg-raised: #151719;   /* panels, code, the pipeline card */
+  --bg-sunk:   #090a0b;   /* letterbox behind full-bleed covers */
+
+  /* — Ink · warm off-white, never pure #fff — */
+  --fg:        #e9e6df;
+  --fg-muted:  #9b988f;   /* deks, captions, metadata */
+  --fg-faint:  #61605a;   /* stripped fields, the least-important */
+
+  /* — Accent · safelight amber. Aim for once per view. — */
+  --accent:     #e7a54b;
+  --accent-dim: #b98436;
+  --accent-ink: #120c04;  /* ink on an amber fill */
+
+  /* — Structure · hairlines, not boxes — */
+  --rule:      color-mix(in oklab, var(--fg) 13%, transparent);
+  --rule-soft: color-mix(in oklab, var(--fg) 6%,  transparent);
+
+  /* — Measure & rhythm — */
+  --measure: 65ch;
+  --gutter:  clamp(1.1rem, 4vw, 2.75rem);
+  --step:    clamp(1.4rem, 3vw, 2.2rem);
+
+  /* — Type · tokenized. Drop real faces in later; the fallbacks hold. — */
+  --serif: "Newsreader", "Iowan Old Style", Charter, Georgia, serif;
+  --mono:  "Berkeley Mono", ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  --fs-micro:   0.75rem;
+  --fs-meta:    0.8125rem;
+  --fs-body:    1.0625rem;
+  --fs-lead:    1.2rem;
+  --fs-h2:      1.55rem;
+  --fs-h1:      clamp(2rem, 5vw, 3.1rem);
+  --fs-display: clamp(2.6rem, 8.5vw, 5.5rem);
+}
+
+/* ---- reset-ish -------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3 { line-height: 1.15; font-weight: 500; letter-spacing: -0.012em; }
+h1 { font-size: var(--fs-h1); margin: 0 0 0.4em; }
+h2 { font-size: var(--fs-h2); margin: 2em 0 0.6em; }
+p  { margin: 0 0 1em; }
+a  { color: inherit; text-decoration-color: var(--accent-dim); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: var(--step) 0; }
+
+/* ---- shared utilities ------------------------------------------ */
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.wrap { width: 100%; max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg-muted);
+  margin: 0 0 0.9em;
+}
+.lead { font-size: var(--fs-lead); color: var(--fg-muted); line-height: 1.5; }
+
+/* ---- the wordmark · f/11, slash in safelight amber ------------- */
+.wordmark {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-decoration: none;
+}
+.wordmark .slash { color: var(--accent); padding-inline: 0.01em; }
+.wordmark:hover { color: var(--fg); }
+.wordmark--hero { font-size: var(--fs-display); }
+
+/* ---- site header · sticky, hairline base ----------------------- */
+.site-head {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem var(--gutter);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.site-head .wordmark { font-size: 1.15rem; }
+.site-nav { display: flex; gap: clamp(0.8rem, 2.5vw, 1.6rem); font-size: var(--fs-meta); }
+.site-nav a { color: var(--fg-muted); text-decoration: none; }
+.site-nav a:hover { color: var(--fg); }
+.site-nav a[aria-current="page"] { color: var(--accent); }
+
+/* ---- site footer ----------------------------------------------- */
+.site-foot {
+  margin-top: calc(var(--step) * 2.5);
+  padding: var(--step) var(--gutter);
+  border-top: 1px solid var(--rule);
+  color: var(--fg-muted);
+  font-size: var(--fs-meta);
+}
+.site-foot p { margin: 0 0 0.4em; }
+
+/* ============================================================
+   LANDING · the front door that says "case study", not "blog"
+   ============================================================ */
+.hero { padding: clamp(3rem, 12vh, 7rem) var(--gutter) var(--step); max-width: 60rem; margin-inline: auto; }
+.hero__thesis { font-size: var(--fs-lead); color: var(--fg); max-width: 42ch; margin-block: 1.2em; }
+.hero__thesis b { color: var(--accent); font-weight: 500; }
+
+/* the headline benchmark numbers, pulled from the live build */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border-block: 1px solid var(--rule);
+  margin-top: var(--step);
+}
+.stat { background: var(--bg); padding: 1.1rem 1.2rem; }
+.stat__num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.7rem; color: var(--fg); }
+.stat__num em { color: var(--accent); font-style: normal; }
+.stat__label { font-family: var(--mono); font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-muted); margin-top: 0.35rem; }
+
+/* ============================================================
+   GUIDE HOME · a numbered spine you can read in order.
+   (Numbering earns its place: the build really is a sequence.)
+   ============================================================ */
+.spine { list-style: none; margin: 0; padding: 0; }
+.chapter {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: clamp(0.9rem, 3vw, 1.8rem);
+  padding-block: 1.15rem;
+  border-top: 1px solid var(--rule);
+  text-decoration: none;
+}
+.spine > li:last-child .chapter { border-bottom: 1px solid var(--rule); }
+.chapter__num { font-family: var(--mono); font-size: var(--fs-meta); color: var(--accent-dim); }
+.chapter__title { font-size: 1.2rem; margin: 0 0 0.2em; }
+.chapter__dek { color: var(--fg-muted); font-size: var(--fs-meta); margin: 0; }
+.chapter__status { font-family: var(--mono); font-size: var(--fs-micro); color: var(--fg-faint); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+.chapter:hover .chapter__title { color: var(--accent); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--step); }
+.tag { font-family: var(--mono); font-size: var(--fs-micro); color: var(--fg-muted); border: 1px solid var(--rule); padding: 0.25rem 0.6rem; text-decoration: none; }
+.tag:hover { color: var(--accent); border-color: var(--accent-dim); }
+
+/* ============================================================
+   ARTICLE · a single measure, but with apparatus
+   ============================================================ */
+.article { padding-block: var(--step); }
+.article__head { margin-bottom: var(--step); }
+.byline { color: var(--fg-muted); font-size: var(--fs-meta); }
+.article :is(p, ul, ol) { max-width: var(--measure); }
+.article figure { margin: var(--step) 0; }
+.article figcaption { font-family: var(--mono); font-size: var(--fs-micro); color: var(--fg-muted); margin-top: 0.5rem; }
+
+/* code + config, kept quiet */
+pre { background: var(--bg-raised); border-left: 2px solid var(--accent-dim); padding: 1rem 1.2rem; overflow-x: auto; font-size: var(--fs-meta); line-height: 1.55; margin: var(--step) 0; }
+code { font-family: var(--mono); font-size: 0.92em; }
+:not(pre) > code { background: var(--bg-raised); padding: 0.1em 0.35em; border-radius: 2px; }
+
+/* the RESULT block · the measurable outcome, as evidence */
+.result { font-family: var(--mono); background: var(--bg-raised); border: 1px solid var(--rule); padding: 1.1rem 1.2rem; margin: var(--step) 0; }
+.result__label { font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-muted); margin: 0 0 0.7rem; }
+.result__row { display: grid; grid-template-columns: 5.5rem 1fr auto; gap: 0.8rem; align-items: center; font-size: var(--fs-meta); margin-bottom: 0.4rem; }
+.result__row span:first-child { color: var(--fg-muted); }
+.bar { height: 0.5rem; background: var(--rule); overflow: hidden; }
+.bar__fill { height: 100%; background: var(--accent-dim); }
+.bar__fill--after { background: var(--accent); }
+.result__num { font-variant-numeric: tabular-nums; }
+
+.chapter-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: calc(var(--step) * 1.5); padding-top: var(--step); border-top: 1px solid var(--rule); font-size: var(--fs-meta); color: var(--fg-muted); }
+.chapter-nav a { text-decoration: none; }
+
+/* ============================================================
+   ESSAY · the exhibit. Bleed grid: contained prose interleaved
+   with images that break out to the full viewport.
+   ============================================================ */
+.essay {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--gutter), 1fr)
+    [content-start] min(var(--measure), 100% - var(--gutter) * 2) [content-end]
+    minmax(var(--gutter), 1fr) [full-end];
+  row-gap: var(--step);
+  padding-bottom: var(--step);
+}
+.essay > * { grid-column: content; }
+.essay > .bleed { grid-column: full; }
+.essay > .bleed img { width: 100%; }
+.essay figcaption { font-family: var(--mono); font-size: var(--fs-micro); color: var(--fg-muted); margin-top: 0.5rem; }
+.essay > .bleed figcaption { padding-inline: var(--gutter); }
+
+/* full-bleed cover with overlaid title */
+.cover { grid-column: full; position: relative; background: var(--bg-sunk); margin-bottom: var(--step); }
+.cover img { width: 100%; max-height: 84vh; object-fit: cover; }
+.cover__title { position: absolute; inset-inline: 0; bottom: 0; padding: clamp(1.5rem, 6vw, 4rem) var(--gutter); background: linear-gradient(to top, rgba(9,10,11,0.82), transparent); }
+.cover__title h1 { font-size: var(--fs-display); max-width: 20ch; margin: 0; }
+
+/* dominant-color placeholder · the loading state, and proof of
+   the concept: the placeholder is a swatch pulled from the photo */
+.frame { aspect-ratio: var(--ar, 3 / 2); background: var(--lqip, var(--bg-raised)); }
+
+/* ============================================================
+   PIPELINE CARD · an honest receipt. Kept fields plain; stripped
+   fields struck through, NAMES ONLY — never the values we removed.
+   ============================================================ */
+.pipeline { font-family: var(--mono); font-size: var(--fs-meta); background: var(--bg-raised); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-top: var(--step); }
+.pipeline__eyebrow { font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-muted); margin: 0 0 0.9rem; }
+.pipeline__rows { margin: 0; }
+.pipeline__row { display: flex; justify-content: space-between; gap: 1.2rem; padding-block: 0.4rem; border-bottom: 1px solid var(--rule-soft); }
+.pipeline__key { color: var(--fg-muted); margin: 0; }
+.pipeline__val { margin: 0; font-variant-numeric: tabular-nums; color: var(--fg); }
+.pipeline__row--stripped { color: var(--fg-faint); }
+.pipeline__row--stripped .pipeline__key { text-decoration: line-through; }
+.pipeline__row--stripped .pipeline__val { color: var(--fg-faint); }
+.pipeline__saved { margin: 1rem 0 0; font-size: 1.1rem; color: var(--fg); }
+.pipeline__saved b { color: var(--accent); font-weight: 500; }
+.pipeline__saved small { display: block; color: var(--fg-muted); font-size: var(--fs-micro); margin-top: 0.2rem; }
+
+/* ============================================================
+   BENCHMARK DASHBOARD · promoted from footer to first-class page
+   ============================================================ */
+.benchmark { padding-block: var(--step); }
+.receipt { border: 1px solid var(--rule); background: var(--bg-raised); padding: 1.4rem 1.5rem; margin-bottom: var(--step); }
+.receipt__line { font-size: var(--fs-lead); margin: 0 0 0.5rem; }
+.receipt__line b { font-family: var(--mono); color: var(--accent); }
+.receipt__meta { font-family: var(--mono); font-size: var(--fs-micro); color: var(--fg-muted); margin: 0; }
+
+.matrix { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: var(--fs-meta); }
+.matrix caption { text-align: left; font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 0.6rem; }
+.matrix th, .matrix td { text-align: left; padding: 0.55rem 0.8rem 0.55rem 0; border-bottom: 1px solid var(--rule); }
+.matrix thead th { color: var(--fg-muted); font-weight: 400; }
+.matrix .yes { color: var(--accent); }
+.matrix .no  { color: var(--fg-faint); }
+.matrix a { color: var(--fg-muted); }
+
+/* ============================================================
+   MOTION · progressive-enhancement page transitions, off if unwanted
+   ============================================================ */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---- small screens --------------------------------------------- */
+@media (max-width: 40rem) {
+  .site-head { flex-wrap: wrap; }
+  .chapter { grid-template-columns: auto 1fr; }
+  .chapter__status { grid-column: 2; }
+  .result__row { grid-template-columns: 4.5rem 1fr auto; }
+}

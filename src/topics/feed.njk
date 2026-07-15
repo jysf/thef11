@@ -1,0 +1,36 @@
+---
+# One Atom feed per tag, at /topics/<tag>/feed.xml.
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+    - posts
+    - featured
+permalink: "/topics/{{ tag | slugify }}/feed.xml"
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }} — {{ tag }}</title>
+  <subtitle>Posts tagged “{{ tag }}” on {{ site.title }}.</subtitle>
+  <link href="{{ site.url }}/topics/{{ tag | slugify }}/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/topics/{{ tag | slugify }}/"/>
+  <updated>{{ collections[tag] | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <id>{{ site.url }}/topics/{{ tag | slugify }}/</id>
+  <author><name>{{ site.title }}</name></author>
+  {%- for post in collections[tag] | reverse %}
+  {%- set absolute = post.url | absoluteUrl(site.url) %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ absolute }}"/>
+    <updated>{{ post.date | dateToRfc3339 }}</updated>
+    <id>{{ absolute }}</id>
+    {%- if post.data.dek %}
+    <summary>{{ post.data.dek }}</summary>
+    {%- endif %}
+    <content type="html">{{ post.templateContent | htmlToAbsoluteUrls(absolute) }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

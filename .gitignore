@@ -1,0 +1,100 @@
+# ── Build output ──────────────────────────────────────────────
+# Derivatives are built in CI and deployed from there. They never
+# enter git: GitHub Pages caps repos around 1 GB and history is
+# permanent, so a committed derivative is a permanent cost.
+_site/
+.cache/
+.eleventy-cache/
+
+
+# ── THE AIRLOCK ───────────────────────────────────────────────
+# Originals live here and NEVER enter git history. SD-card dumps,
+# Photos.app exports, RAW files, anything not yet stripped and
+# verified. Only the output of `crustyimg ingest` — stripped,
+# resized, verified — is ever committed, and it lands in
+# src/posts/<slug>/, not here.
+#
+# One GPS-bearing file committed once is public forever. This is
+# the single most important block in this file.
+_incoming/
+_originals/
+
+
+# ── Belt and braces: formats that should never be committed ───
+# src/posts/<slug>/ holds only stripped web JPEG/PNG/WebP/AVIF.
+# If a RAW file or a HEIC straight off a phone ever ends up staged,
+# it means the airlock was bypassed — so refuse them globally.
+# HEIC in particular carries GPS by default and browsers can't
+# display it anyway; it has no business in the repo.
+*.heic
+*.HEIC
+*.heif
+*.HEIF
+*.raf
+*.RAF
+*.nef
+*.NEF
+*.dng
+*.DNG
+*.cr2
+*.CR2
+*.cr3
+*.CR3
+*.arw
+*.ARW
+*.orf
+*.ORF
+*.rw2
+*.RW2
+*.tif
+*.tiff
+*.psd
+*.xmp
+
+
+# ── Node ──────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+.npm/
+*.tsbuildinfo
+
+
+# ── Environment / secrets ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+
+# ── macOS ─────────────────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+
+# ── Editors ───────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# ── Rust / crustyimg, if it ever lands in-tree ────────────────
+target/
+
+
+# ── Local scratch · download staging, not part of the site ────
+# Files were downloaded here and copied into place; keep the staging
+# area and any download archives out of history.
+tmp/
+*.zip
+
+
+# ── Internal working material · kept on disk, never published ──
+# The build brief, the design/roadmap notes, the static design-reference
+# render, and handoff archives live locally but stay out of this public,
+# permanent history. Re-add deliberately (its own commit) if one should
+# ever go public.
+docs/background/
+design_handoff/
+design/

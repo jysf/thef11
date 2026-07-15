@@ -1,0 +1,74 @@
+name: CI & Deploy
+
+# The audit runs on EVERY push and pull request. It is the real enforcement
+# boundary: the pre-commit hook can be skipped with --no-verify and does not
+# exist on a fresh clone, so CI re-runs the identical script independently.
+# Deploy is gated on it — nothing ships if a single image fails the keep-list.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Allow the deploy job to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One in-flight deploy at a time; don't cancel a running one mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ── The privacy wall ────────────────────────────────────────────
+  audit:
+    name: Image audit (EXIF keep-list)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install exiftool
+        run: sudo apt-get update && sudo apt-get install -y libimage-exiftool-perl
+      - name: Audit every tracked image
+        run: ./scripts/audit-images.sh all
+
+  # ── Cross-version build · this repo will publish a plugin later ──
+  build:
+    name: Build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24, 26]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  # ── Deploy to GitHub Pages · only from main, only if audit + build pass ──
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    needs: [audit, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

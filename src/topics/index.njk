@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: Topics
+---
+{# An index of every tag, each linking to its own paginated page. #}
+<div class="wrap article">
+  <header class="article__head">
+    <h1>Topics</h1>
+    <p class="lead">Every tag on f/11. Each has its own page and its own feed.</p>
+  </header>
+
+  <div class="tags">
+    {%- for tag, posts in collections %}
+    {%- if tag not in ["all", "posts", "featured"] %}
+    <a class="tag" href="/topics/{{ tag | slugify }}/">{{ tag }} <span class="mono">{{ posts.length }}</span></a>
+    {%- endif %}
+    {%- else %}
+    <p class="lead">No topics yet.</p>
+    {%- endfor %}
+  </div>
+</div>

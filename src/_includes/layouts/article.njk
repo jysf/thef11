@@ -1,0 +1,41 @@
+---
+layout: base.njk
+---
+<article class="article wrap">
+  <header class="article__head">
+    <p class="eyebrow">
+      {%- if chapter %}Chapter {{ chapter }} · {% endif -%}
+      {{ topics | join(" · ") if topics }}
+    </p>
+    <h1>{{ title }}</h1>
+    {% if dek %}<p class="lead">{{ dek }}</p>{% endif %}
+    <p class="byline">
+      {{ page.date | readableDate }}
+      {%- if commit %} · <a href="{{ commit }}" rel="external">view the commit ↗</a>{% endif %}
+    </p>
+  </header>
+
+  {{ content | safe }}
+
+  {%- if result %}
+  {# `result` documents the measurable outcome of the decision this post makes. #}
+  <section class="result" aria-label="Result">
+    <p class="result__label">{{ result.label or "Result" }}</p>
+    <div class="result__row">
+      <span>before</span>
+      <span class="bar"><span class="bar__fill" style="width: 100%"></span></span>
+      <span class="result__num">{{ result.before }}</span>
+    </div>
+    <div class="result__row">
+      <span>after</span>
+      <span class="bar"><span class="bar__fill bar__fill--after" style="width: {{ result.afterPct }}%"></span></span>
+      <span class="result__num">{{ result.after }}</span>
+    </div>
+  </section>
+  {%- endif %}
+
+  <nav class="chapter-nav" aria-label="Chapters">
+    {% if prev %}<a href="{{ prev.url }}">← {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+    {% if next %}<a href="{{ next.url }}">{{ next.title }} →</a>{% endif %}
+  </nav>
+</article>

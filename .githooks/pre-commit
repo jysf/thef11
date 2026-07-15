@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# .githooks/pre-commit
+#
+# A thin wrapper. All the logic lives in scripts/audit-images.sh so that this
+# hook and the CI audit job run IDENTICAL code and cannot drift apart.
+#
+# This hook is fast local feedback. It is NOT the enforcement boundary:
+#   - it can be bypassed with `git commit --no-verify`
+#   - it does not exist on a fresh clone until hooks are installed
+# CI is the real enforcement. Both call the same script.
+#
+# Installed by `npm run prepare` (which sets core.hooksPath to .githooks),
+# so it is versioned and shared, unlike .git/hooks/.
+
+set -euo pipefail
+
+exec "$(git rev-parse --show-toplevel)/scripts/audit-images.sh" staged
