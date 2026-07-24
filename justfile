@@ -28,5 +28,22 @@ clean:
 audit:
     npm run audit
 
+# Ingest photos from an external folder into a post, then verify what landed.
+#
+#   just ingest ~/Photos/site-originals/rooftops 2026-07-20-rooftops
+#
+# SRC must live OUTSIDE this repo (the airlock) — originals never enter git.
+# crustyimg bakes orientation, strips metadata and drops GPS by default, and
+# picks the smallest modern format; the keep-list audit then proves what we're
+# about to commit is clean. Trust nothing, verify everything.
+#
+# HEIC is not decoded by crustyimg yet — pre-convert with `sips`, and keep that
+# intermediate in the airlock too, since it inherits the original's GPS.
+ingest SRC SLUG:
+    mkdir -p src/posts/{{SLUG}}
+    crustyimg web "{{SRC}}"/* --out-dir src/posts/{{SLUG}}/
+    git add src/posts/{{SLUG}}
+    npm run audit:staged
+
 # The pre-push gate: build, then audit — the same two checks CI runs.
 check: build audit

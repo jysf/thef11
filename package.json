@@ -13,6 +13,7 @@
     "build": "eleventy",
     "clean": "rm -rf _site .cache .eleventy-cache",
     "audit": "$(command -v /opt/homebrew/bin/bash || command -v /usr/local/bin/bash || command -v bash) scripts/audit-images.sh all",
+    "audit:staged": "$(command -v /opt/homebrew/bin/bash || command -v /usr/local/bin/bash || command -v bash) scripts/audit-images.sh staged",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
