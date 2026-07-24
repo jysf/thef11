@@ -23,13 +23,12 @@ build:
 clean:
     npm run clean
 
-# Audit every tracked image against the EXIF keep-list.
 # Needs exiftool and Bash >= 4 (macOS ships 3.2 — `brew install bash`).
+
+# Audit every tracked image against the EXIF keep-list
 audit:
     npm run audit
 
-# Ingest photos from an external folder into a post, then verify what landed.
-#
 #   just ingest ~/Photos/site-originals/rooftops 2026-07-20-rooftops
 #
 # SRC must live OUTSIDE this repo (the airlock) — originals never enter git.
@@ -39,6 +38,8 @@ audit:
 #
 # HEIC is not decoded by crustyimg yet — pre-convert with `sips`, and keep that
 # intermediate in the airlock too, since it inherits the original's GPS.
+
+# Ingest an external folder of photos into src/posts/<SLUG>/, stripped + audited
 ingest SRC SLUG:
     mkdir -p src/posts/{{SLUG}}
     crustyimg web "{{SRC}}"/* --out-dir src/posts/{{SLUG}}/
