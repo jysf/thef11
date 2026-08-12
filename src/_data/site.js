@@ -14,6 +14,7 @@ export default {
   // Primary navigation. The wordmark handles Home; these are the rest.
   nav: [
     { label: "Topics", url: "/topics/" },
+    { label: "crustyimg", url: "/crustyimg/" },
     { label: "About", url: "/about/" },
   ],
 

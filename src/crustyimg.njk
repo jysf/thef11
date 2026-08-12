@@ -1,0 +1,29 @@
+---
+layout: base.njk
+title: crustyimg
+---
+{#
+  A small sub-section on the tool this blog is built to exercise. Kept factual:
+  everything here is true today (real CLI, real install, live browser demo).
+  It will grow as the plugin and the pipeline land — for now it just points at
+  the real thing.
+#}
+<div class="wrap article">
+  <header class="article__head">
+    <p class="eyebrow">The tool behind the pictures</p>
+    <h1>crustyimg</h1>
+    <p class="lead">Outcome-driven image compression: you declare the result you want — a perceptual quality target — instead of guessing a quality number. One static Rust binary, zero system dependencies.</p>
+    <p class="byline"><a href="https://github.com/jysf/crustyimg" rel="external">Open source on GitHub ↗</a></p>
+  </header>
+
+  <p>crustyimg is an open-source command-line tool for preparing images for the web. It auto-orients, strips location and identity metadata by default, and picks the smallest modern format — AVIF for photographs, lossless WebP or PNG for graphics — that still meets the quality you asked for. f/11 is its dogfooding testbed: the pipeline that brings photos into this blog runs on it.</p>
+
+  <h2>Try it in your browser</h2>
+  <p>The playground runs the real Rust engine compiled to WebAssembly, so nothing is uploaded — drop an image in and watch <code>crustyimg web</code> make it web-ready.</p>
+  <p><a href="https://jysf.github.io/crustyimg/" rel="external">Open the playground ↗</a></p>
+
+  <h2>Install</h2>
+  <pre><code>cargo install crustyimg                 # crates.io
+brew install jysf/tap/crustyimg         # Homebrew
+cargo install --git https://github.com/jysf/crustyimg</code></pre>
+</div>
