@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if title %}{{ title }} · {% endif %}f/11</title>
   <meta name="description" content="{{ description or site.description }}">
+
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+  {# Social / link previews. og:image must be an absolute URL. #}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="f/11">
+  <meta property="og:title" content="{% if title %}{{ title }} · {% endif %}f/11">
+  <meta property="og:description" content="{{ description or site.description }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:image" content="{{ site.url }}/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="f/11">
   {% block head %}{% endblock %}
